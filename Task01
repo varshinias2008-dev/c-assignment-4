@@ -1,0 +1,76 @@
+                       #include <stdio.h>
+#include <string.h>
+
+#define MAX_PATIENTS 100
+
+struct BloodPressure {
+    int systolic;
+    int diastolic;
+};
+
+struct Date {
+    int day;
+    int month;
+    int year;
+};
+
+struct Patient {
+    char name[50];
+    int age;
+    char phone[11];
+    struct BloodPressure bp;
+    struct Date visitDate;
+};
+
+int addPatient(struct Patient *p, char n[], int a, char ph[],
+               struct BloodPressure b, struct Date d)
+{
+    int i;
+
+    if (p == NULL || n == NULL || ph == NULL)
+        return 0;
+
+    if (strlen(n) >= sizeof(p->name))
+        return 0;
+
+    if (strlen(ph) != 10)
+        return 0;
+
+    for (i = 0; i < 10; i++) {
+        if (ph[i] < '0' || ph[i] > '9')
+            return 0;
+    }
+
+    strcpy(p->name, n);
+    p->age = a;
+    strcpy(p->phone, ph);
+    p->bp = b;
+    p->visitDate = d;
+
+    return 1;
+}
+
+int main(void)
+{
+    struct Patient patients[MAX_PATIENTS];
+    int count = 0;
+    struct BloodPressure b = {120, 80};
+    struct Date d = {19, 11, 2026};
+
+    if (count < MAX_PATIENTS) {
+        if (addPatient(&patients[count], "Ravi", 35,
+                       "9876543210", b, d)) {
+            count++;
+            printf("Patient added successfully");
+        } else {
+            printf("Invalid patient details");
+        }
+    } else {
+        printf("Patient register is full");
+    }
+
+    return 0;
+}   
+
+output :
+patient added successfully
